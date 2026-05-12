@@ -332,22 +332,22 @@ var SUPERSETS = {
     {
       id: 'ss-a1', label: 'Drücken + Ziehen (Oberkörper)', rest: '90 Sek nach jedem Paar',
       ex: [
-        {id: 'pushup', name: 'Liegestütz', rotation: PUSH_UP_ROTATION, sets: 4, reps: '20–25', load: 'Körpergewicht', timed: false},
-        {id: 'db-row-a', name: 'Kurzhantel Vorgebeugtes Rudern', sets: 4, reps: '12–15', load: 'Gleiches KH-Paar', timed: false},
+        {id: 'pushup', weighted: false, name: 'Liegestütz', rotation: PUSH_UP_ROTATION, sets: 4, reps: '20–25', load: 'Körpergewicht', timed: false},
+        {id: 'db-row-a', weighted: true, name: 'DB Vorgebeugtes Rudern', sets: 4, reps: '12–15', load: 'Gleiches DB-Paar', timed: false},
       ]
     },
     {
       id: 'ss-a2', label: 'Drücken + Curlen', rest: '75 Sek nach jedem Paar',
       ex: [
-        {id: 'ohp', name: 'KH Schulterdrücken', sets: 3, reps: '12', load: 'Gleiches KH-Paar', timed: false},
-        {id: 'curl', name: 'Curl-Stange Bizeps Curl', sets: 3, reps: '12', load: 'Gleiches KH-Paar', timed: false},
+        {id: 'ohp', weighted: true, name: 'DB Schulterdrücken', sets: 3, reps: '12', load: 'Gleiches DB-Paar', timed: false},
+        {id: 'curl', weighted: true, name: 'BB Bizeps Curl', sets: 3, reps: '12', load: 'Gleiches DB-Paar', timed: false},
       ]
     },
     {
       id: 'ss-a3', label: 'Core Finisher', rest: '45 Sek',
       ex: [
-        {id: 'plank-a', name: 'Plank', sets: 3, reps: '45 Sek', load: 'Körpergewicht', timed: true, seconds: 45},
-        {id: 'deadbug', name: 'Dead Bug', sets: 3, reps: '10 je Seite', load: 'Körpergewicht', timed: false},
+        {id: 'plank-a', weighted: false, name: 'Plank', sets: 3, reps: '45 Sek', load: 'Körpergewicht', timed: true, seconds: 45},
+        {id: 'deadbug', weighted: false, name: 'Dead Bug', sets: 3, reps: '10 je Seite', load: 'Körpergewicht', timed: false},
       ]
     }
   ],
@@ -355,22 +355,22 @@ var SUPERSETS = {
     {
       id: 'ss-b1', label: 'Hüftstreckung + Ziehen', rest: '90 Sek nach jedem Paar',
       ex: [
-        {id: 'rdl', name: 'Curl-Stange Rumänisches Kreuzheben', sets: 4, reps: '12', load: '~15–20kg gesamt', timed: false},
-        {id: 'pullup', name: 'Klimmzug (Obergriff) — oder Negativen wenn nötig', sets: 4, reps: 'Max / 5–8', load: 'Körpergewicht', timed: false},
+        {id: 'rdl', weighted: true, name: 'BB Rumänisches Kreuzheben', sets: 4, reps: '12', load: '~15–20kg gesamt', timed: false},
+        {id: 'pullup', name: 'BB Vorgebeugtes Rudern (Klimmzug-Ersatz)', sets: 4, reps: '10–12', load: '~15–20kg', timed: false, weighted: true},
       ]
     },
     {
       id: 'ss-b2', label: 'Kniebeuge + Rudern', rest: '90 Sek nach jedem Paar',
       ex: [
-        {id: 'goblet', name: 'Goblet Kniebeuge (eine KH an der Brust)', sets: 4, reps: '15–20', load: 'Schwerste einzelne KH', timed: false},
-        {id: 'bar-row', name: 'Curl-Stange Vorgebeugtes Rudern', sets: 4, reps: '12', load: 'Gleiche Stange wie RDL', timed: false},
+        {id: 'goblet', weighted: true, name: 'Goblet Kniebeuge (eine DB an der Brust)', sets: 4, reps: '15–20', load: 'Schwerste einzelne DB', timed: false},
+        {id: 'bar-row', weighted: true, name: 'BB Vorgebeugtes Rudern', sets: 4, reps: '12', load: 'Gleiche Stange wie RDL', timed: false},
       ]
     },
     {
       id: 'ss-b3', label: 'Einbeinig + Core', rest: '60 Sek',
       ex: [
-        {id: 'rev-lunge', name: 'Rückwärtsausfallschritt (wechselseitig)', sets: 3, reps: '10 je Bein', load: 'Körpergewicht', timed: false},
-        {id: 'glute-bridge', name: 'Gesäßbrücke halten', sets: 3, reps: '40 Sek', load: 'Körpergewicht', timed: true, seconds: 40},
+        {id: 'rev-lunge', weighted: false, name: 'Rückwärtsausfallschritt (wechselseitig)', sets: 3, reps: '10 je Bein', load: 'Körpergewicht', timed: false},
+        {id: 'glute-bridge', weighted: false, name: 'Gesäßbrücke halten', sets: 3, reps: '40 Sek', load: 'Körpergewicht', timed: true, seconds: 40},
       ]
     }
   ],
@@ -378,22 +378,22 @@ var SUPERSETS = {
     {
       id: 'ss-c1', label: 'Power Drücken + Hüftstreckung', rest: '90 Sek nach jedem Paar',
       ex: [
-        {id: 'burpee', name: 'Burpee (Woche 1–4 ohne Sprung, ab Woche 5 mit)', sets: 4, reps: '10–12', load: 'Körpergewicht', timed: false},
-        {id: 'sl-rdl', name: 'Einbeiniges RDL (KH in beiden Händen)', sets: 4, reps: '8 je Seite', load: 'Mittleres KH-Paar', timed: false},
+        {id: 'burpee', weighted: false, name: 'Burpee (Woche 1–4 ohne Sprung, ab Woche 5 mit)', sets: 4, reps: '10–12', load: 'Körpergewicht', timed: false},
+        {id: 'sl-rdl', weighted: true, name: 'Einbeiniges RDL (DB in beiden Händen)', sets: 4, reps: '8 je Seite', load: 'Mittleres DB-Paar', timed: false},
       ]
     },
     {
       id: 'ss-c2', label: 'Kniebeuge-Drücken + Klimmzug', rest: '90 Sek nach jedem Paar',
       ex: [
-        {id: 'thruster', name: 'KH Thruster (Kniebeuge zu Schulterdrücken)', sets: 3, reps: '10', load: 'Leichtes KH-Paar', timed: false},
-        {id: 'chinup', name: 'Klimmzug Untergriff', sets: 3, reps: 'Max', load: 'Körpergewicht', timed: false},
+        {id: 'thruster', weighted: true, name: 'DB Thruster (Kniebeuge zu Schulterdrücken)', sets: 3, reps: '10', load: 'Leichtes DB-Paar', timed: false},
+        {id: 'chinup', name: 'DB Einarmiges Rudern', sets: 3, reps: '12 je Seite', load: 'Schwerste DB', timed: false, weighted: true},
       ]
     },
     {
       id: 'ss-c3', label: 'Core Finisher', rest: '45 Sek',
       ex: [
-        {id: 'russian-twist', name: 'Russian Twist (eine KH halten)', sets: 3, reps: '20 gesamt', load: 'Leichte KH', timed: false},
-        {id: 'hollow', name: 'Hollow Body Halten', sets: 3, reps: '30 Sek', load: 'Körpergewicht', timed: true, seconds: 30},
+        {id: 'russian-twist', name: 'Russian Twist (eine DB halten)', sets: 3, reps: '20 gesamt', load: 'Leichte DB', timed: false},
+        {id: 'hollow', weighted: false, name: 'Hollow Body Halten', sets: 3, reps: '30 Sek', load: 'Körpergewicht', timed: true, seconds: 30},
       ]
     }
   ]
@@ -423,13 +423,13 @@ var RUN_DATA = {
 
 // ── STRETCHING ──
 var STRETCHES = [
-  {name: '90/90 Hüftdehnung', dur: '60 Sek je Seite', priority: true, cue: 'Auf dem Boden sitzen, Vorderbein bei 90°, Hinterbein bei 90° dahinter. Aufrecht sitzen, leicht nach vorne über das vordere Schienbein lehnen. Trainiert Hüft-Innen- und Außenrotation — kritisch für Läufer.'},
-  {name: 'Kniender Hüftbeuger-Stretch', dur: '60 Sek je Seite', priority: true, cue: 'Ausfallschrittposition, hinteres Knie am Boden. Becken nach hinten kippen bevor du nach vorne lehnst. Du sitzt und läufst — das macht beides rückgängig.'},
-  {name: 'Liegender Oberschenkeldehner', dur: '45 Sek je Seite', priority: true, cue: 'Auf dem Rücken liegen, Handtuch um einen Fuß schlingen, Bein zur Decke strecken. Nicht federn. Halt wo ein Ziehen spürbar ist, kein Schmerz.'},
-  {name: 'Wade & Achillessehne Dehnen', dur: '45 Sek je Seite — zwei Positionen', priority: true, cue: 'An der Wand: gestrecktes Bein (Gastrocnemius), dann gebeugtes Knie (Soleus/Achilles). Die gebeugte Version überspringen die meisten — dabei ist sie für Läufer am wichtigsten.'},
-  {name: 'Faden-durch-Nadel (Brustwirbel Rotation)', dur: '45 Sek je Seite', priority: false, cue: 'Im Vierfüßlerstand einen Arm unter dem Körper durchschieben und rotieren. Verbessert die Brustwirbel-Mobilität und damit die Laufhaltung unter Ermüdung.'},
-  {name: 'Kind-Haltung mit Strecken', dur: '60 Sek', priority: false, cue: 'Knien, zurück zu den Fersen setzen, Arme nach vorne strecken. Hände 30 Sek zur einen Seite, dann zur anderen. Dekomprimiert die Wirbelsäule.'},
-  {name: 'Beine an der Wand', dur: '2 Min', priority: true, cue: 'Auf dem Rücken liegen, Beine senkrecht an einer Wand. Passiv. Leert Flüssigkeit aus den Beinen, senkt HF, signalisiert dem Nervensystem herunterzufahren. Als letztes machen — der Ausschalter.'},
+  {name: '90/90 Hüftdehnung', dur: '60 Sek je Seite', priority: true, secs: 60, cue: 'Auf dem Boden sitzen, Vorderbein bei 90°, Hinterbein bei 90° dahinter. Aufrecht sitzen, leicht nach vorne über das vordere Schienbein lehnen. Trainiert Hüft-Innen- und Außenrotation — kritisch für Läufer.'},
+  {name: 'Kniender Hüftbeuger-Stretch', dur: '60 Sek je Seite', priority: true, secs: 60, cue: 'Ausfallschrittposition, hinteres Knie am Boden. Becken nach hinten kippen bevor du nach vorne lehnst. Du sitzt und läufst — das macht beides rückgängig.'},
+  {name: 'Liegender Oberschenkeldehner', dur: '45 Sek je Seite', priority: true, secs: 45, cue: 'Auf dem Rücken liegen, Handtuch um einen Fuß schlingen, Bein zur Decke strecken. Nicht federn. Halt wo ein Ziehen spürbar ist, kein Schmerz.'},
+  {name: 'Wade & Achillessehne Dehnen', dur: '45 Sek je Seite — zwei Positionen', priority: true, secs: 45, cue: 'An der Wand: gestrecktes Bein (Gastrocnemius), dann gebeugtes Knie (Soleus/Achilles). Die gebeugte Version überspringen die meisten — dabei ist sie für Läufer am wichtigsten.'},
+  {name: 'Faden-durch-Nadel (Brustwirbel Rotation)', dur: '45 Sek je Seite', priority: false, secs: 45, cue: 'Im Vierfüßlerstand einen Arm unter dem Körper durchschieben und rotieren. Verbessert die Brustwirbel-Mobilität und damit die Laufhaltung unter Ermüdung.'},
+  {name: 'Kind-Haltung mit Strecken', dur: '60 Sek', priority: false, secs: 60, cue: 'Knien, zurück zu den Fersen setzen, Arme nach vorne strecken. Hände 30 Sek zur einen Seite, dann zur anderen. Dekomprimiert die Wirbelsäule.'},
+  {name: 'Beine an der Wand', dur: '2 Min', priority: true, secs: 120, cue: 'Auf dem Rücken liegen, Beine senkrecht an einer Wand. Passiv. Leert Flüssigkeit aus den Beinen, senkt HF, signalisiert dem Nervensystem herunterzufahren. Als letztes machen — der Ausschalter.'},
 ];
 
 // ── NUTRITION ──
@@ -637,7 +637,7 @@ function renderKraftContent(type, week, dkey) {
   // Info note
   var notes = {
     'kraft-a': 'Alle Kurzhantel-Übungen — kein Plattenwechsel. Gewicht wählen das für alle Übungen passt (~10–12kg pro Hand). Supersets: A1 dann A2 mit 20 Sek Pause, dann 90 Sek zwischen Paaren.',
-    'kraft-b': 'Curl-Stange für RDL (~15–20kg) — schwerste Einheit. Kein Plattenwechsel innerhalb des Supersets.',
+    'kraft-b': 'BB für RDL (~15–20kg) — schwerste Einheit. Kein Plattenwechsel innerhalb des Supersets.',
     'kraft-c': 'Gemischt Körpergewicht und KH. Kein Plattenwechsel. Höhere Intensität als Mo/Mi.'
   };
   html += '<div class="info-box">' + notes[type] + '</div>';
@@ -670,6 +670,7 @@ function renderKraftContent(type, week, dkey) {
       if (suggestion) html += '<div class="ex-suggestion">💡 ' + suggestion + '</div>';
 
       // Timer or set logger
+      var isWeighted = ex.weighted !== false;
       if (ex.timed) {
         html += '<div class="timer-block" id="timer-wrap-' + ex.id + '-' + dkey + '">';
         html += '<div class="timer-display" id="timer-' + ex.id + '-' + dkey + '">' + ex.seconds + '</div>';
@@ -685,8 +686,8 @@ function renderKraftContent(type, week, dkey) {
           var doneCls = saved.done ? ' done' : '';
           html += '<div class="set-entry' + doneCls + '" id="set-' + ex.id + '-' + dkey + '-' + s + '">';
           html += '<span class="set-num">S' + (s+1) + '</span>';
-          html += '<input class="set-input" type="number" placeholder="kg" value="' + (saved.kg||'') + '" onchange="saveSet(\'' + ex.id + '\',\'' + dkey + '\',' + s + ',this.value,null)" style="width:40px">';
-          html += '<span class="set-x">×</span>';
+          if (isWeighted) html += '<input class="set-input" type="number" placeholder="kg" value="' + (saved.kg||'') + '" onchange="saveSet(\'' + ex.id + '\',\'' + dkey + '\',' + s + ',this.value,null)" style="width:40px">';
+          if (isWeighted) html += '<span class="set-x">×</span>';
           html += '<input class="set-input" type="number" placeholder="reps" value="' + (saved.reps||'') + '" onchange="saveSet(\'' + ex.id + '\',\'' + dkey + '\',' + s + ',null,this.value)" style="width:40px">';
           html += '<button class="set-check" onclick="toggleSetDone(\'' + ex.id + '\',\'' + dkey + '\',' + s + ')">' + (saved.done ? '✓' : '○') + '</button>';
           html += '</div>';
@@ -782,12 +783,19 @@ function renderStretching() {
   var html = '';
   STRETCHES.forEach(function(s, i) {
     html += '<div class="stretch-row">';
-    html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">';
     html += '<span style="color:var(--text);font-size:13px">' + s.name + '</span>';
-    html += '<div style="display:flex;gap:8px;align-items:center;flex-shrink:0;margin-left:8px">';
+    html += '<div style="display:flex;gap:6px;align-items:center;flex-shrink:0;margin-left:8px">';
     if (s.priority) html += '<span class="priority-star">★</span>';
     html += '<span style="color:var(--text3);font-size:11px;font-family:var(--mono)">' + s.dur + '</span>';
     html += '</div></div>';
+    // Timer for each side/rep
+    var secs = s.secs || 60;
+    html += '<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">';
+    html += '<div class="timer-display" id="stimer-' + i + '" style="font-size:16px;min-width:40px;color:var(--accent2)">' + secs + '</div>';
+    html += '<button class="timer-btn" style="padding:5px 12px;font-size:11px" onclick="startStretchTimer(' + i + ',' + secs + ')">Start</button>';
+    html += '<button class="timer-btn reset" style="padding:5px 10px;font-size:11px" onclick="resetStretchTimer(' + i + ',' + secs + ')">Reset</button>';
+    html += '</div>';
     html += '<div class="stretch-cue">' + s.cue + '</div>';
     html += '</div>';
   });
@@ -1056,6 +1064,51 @@ function showTab(id) {
   var navMap = {heute:0, plan:1, stretching:2, ernaehrung:3, herzfreq:4, fortschritt:5};
   var btns = document.querySelectorAll('.nav-btn');
   if (navMap[id] !== undefined && btns[navMap[id]]) btns[navMap[id]].classList.add('active');
+}
+
+
+// ══════════════════════════════════════
+// STRETCH TIMERS
+// ══════════════════════════════════════
+var STRETCH_TIMERS = {};
+
+function startStretchTimer(idx, seconds) {
+  if (STRETCH_TIMERS[idx]) { clearInterval(STRETCH_TIMERS[idx]); }
+  var remaining = seconds;
+  var el = document.getElementById('stimer-' + idx);
+  if (!el) return;
+  el.style.color = 'var(--accent2)';
+
+  STRETCH_TIMERS[idx] = setInterval(function() {
+    remaining--;
+    var el2 = document.getElementById('stimer-' + idx);
+    if (el2) el2.textContent = remaining;
+    if (remaining <= 0) {
+      clearInterval(STRETCH_TIMERS[idx]);
+      var el3 = document.getElementById('stimer-' + idx);
+      if (el3) { el3.textContent = '✓'; el3.style.color = 'var(--accent3)'; }
+      if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+      try {
+        var ctx = new (window.AudioContext || window.webkitAudioContext)();
+        [0, 0.35].forEach(function(t) {
+          var osc = ctx.createOscillator();
+          var gain = ctx.createGain();
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.frequency.value = 660;
+          gain.gain.setValueAtTime(0.4, ctx.currentTime + t);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.3);
+          osc.start(ctx.currentTime + t);
+          osc.stop(ctx.currentTime + t + 0.3);
+        });
+      } catch(e) {}
+    }
+  }, 1000);
+}
+
+function resetStretchTimer(idx, seconds) {
+  if (STRETCH_TIMERS[idx]) { clearInterval(STRETCH_TIMERS[idx]); delete STRETCH_TIMERS[idx]; }
+  var el = document.getElementById('stimer-' + idx);
+  if (el) { el.textContent = seconds; el.style.color = 'var(--accent2)'; }
 }
 
 // ══════════════════════════════════════
