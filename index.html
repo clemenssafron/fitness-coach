@@ -242,11 +242,11 @@ function getCoreFinisher(type, week) {
     ];
     if (week <= 8) return [
       {id:'db-crunch', name:'DB Crunch', sets:4, reps:'15', weighted:true, timed:false},
-      {id:'ab-rollout', name:'Ab Rollout (BB oder Rad)', sets:3, reps:'8', weighted:false, timed:false},
+      {id:'ab-rollout', name:'Ab Rollout (BB oder Rad)', sets:4, reps:'8', weighted:false, timed:false},
     ];
     return [
       {id:'db-crunch', name:'DB Crunch (schwerer)', sets:4, reps:'20', weighted:true, timed:false},
-      {id:'ab-rollout', name:'Ab Rollout', sets:3, reps:'12', weighted:false, timed:false},
+      {id:'ab-rollout', name:'Ab Rollout', sets:4, reps:'12', weighted:false, timed:false},
     ];
   }
   if (type === 'kraft-b') {
@@ -260,7 +260,7 @@ function getCoreFinisher(type, week) {
     ];
     return [
       {id:'russian-twist', name:'Russian Twist (schwerer DB)', sets:4, reps:'20 gesamt', weighted:true, timed:false},
-      {id:'copenhagen', name:'Copenhagen Plank', sets:3, reps:'20 Sek je Seite', weighted:false, timed:true, seconds:20},
+      {id:'copenhagen', name:'Copenhagen Plank', sets:4, reps:'20 Sek je Seite', weighted:false, timed:true, seconds:20},
     ];
   }
   if (type === 'kraft-c') {
@@ -299,15 +299,10 @@ var SUPERSETS_BASE = {
         {id:'db-rdl', name:'DB Rumänisches Kreuzheben', sets:4, reps:'12', weighted:true, timed:false},
         {id:'db-row-b', name:'DB Einarmiges Rudern', sets:4, reps:'12 je Seite', weighted:true, timed:false},
       ]},
-    {id:'ss-b2', label:'DB Kniebeuge + DB Ausfallschritt', rest:90,
+    {id:'ss-b2', label:'DB Kniebeuge + Jumping Lunge', rest:90,
       ex:[
         {id:'goblet', name:'DB Goblet Kniebeuge', sets:4, reps:'15–20', weighted:true, timed:false},
-        {id:'walking-lunge', name:'DB Walking Lunge', sets:4, reps:'10 je Bein', weighted:true, timed:false},
-      ]},
-    {id:'ss-b3', label:'Einbeinig + Lateral Core', rest:60,
-      ex:[
-        {id:'bulgarian', name:'Bulgarian Split Squat (DB je Hand)', sets:3, reps:'8 je Seite', weighted:true, timed:false},
-        {id:'side-plank-main', name:'Side Plank', sets:3, reps:'30 Sek je Seite', weighted:false, timed:true, seconds:30},
+        {id:'jumping-lunge', name:'Jumping Lunge (Körpergewicht)', sets:4, reps:'10 je Bein', weighted:false, timed:false},
       ]},
   ],
   'kraft-c': [
@@ -368,6 +363,8 @@ var STRETCHES = [
   {name:'Wade & Achillessehne',dur:'45 Sek je Seite',secs:45,priority:true,cue:'An der Wand: gestrecktes Bein (Gastrocnemius), dann gebeugtes Knie (Soleus/Achilles). Die gebeugte Version ist für Läufer am wichtigsten.'},
   {name:'Faden-durch-Nadel (BWS Rotation)',dur:'45 Sek je Seite',secs:45,priority:false,cue:'Im Vierfüßlerstand einen Arm unter dem Körper durchschieben und rotieren. Verbessert die Brustwirbel-Mobilität und Laufhaltung unter Ermüdung.'},
   {name:'Kind-Haltung mit Strecken',dur:'60 Sek',secs:60,priority:false,cue:'Knien, zurück zu den Fersen, Arme nach vorne. Hände 30 Sek zur einen Seite, dann zur anderen. Dekomprimiert die Wirbelsäule.'},
+  {name:'Türrahmen Brustdehnung',dur:'45 Sek',secs:45,priority:true,cue:'Im Türrahmen stehen, Unterarme an den Rahmen lehnen (90° Ellbogen). Einen Schritt nach vorne machen und die Brust sanft durchdrücken. Direkte Gegenbewegung zu Liegestütz und Schulterdrücken — besonders wichtig nach Kraft-A-Tagen.'},
+  {name:'Liegende Brustwirbel-Rotation',dur:'45 Sek je Seite',secs:45,priority:false,cue:'Auf der Seite liegen, Knie übereinander gebeugt (90°), Arme gerade vor der Brust. Den oberen Arm langsam zur anderen Seite führen und die Brust zur Decke öffnen. Knie bleiben am Boden. Entspannt die Brustwirbelsäule, ideal vor dem Einschlafen.'},
   {name:'Beine an der Wand',dur:'2 Min',secs:120,priority:true,cue:'Auf dem Rücken, Beine senkrecht an einer Wand. Passiv. Leert Flüssigkeit aus den Beinen, senkt HF. Als letztes machen — der Ausschalter.'},
 ];
 
@@ -555,8 +552,8 @@ function renderKraftContent(type, week, dkey) {
       if (ex.timed) {
         html += '<div class="timer-block" id="tw-'+ex.id+'-'+dkey+'">';
         html += '<div class="timer-display" id="td-'+ex.id+'-'+dkey+'">'+ex.seconds+'</div>';
-        html += '<button class="timer-btn" onclick="startTimer(\''+ex.id+'\',\''+dkey+'\','+ex.seconds+')">Start</button>';
-        html += '<button class="timer-btn reset-btn" onclick="resetTimer(\''+ex.id+'\',\''+dkey+'\','+ex.seconds+')">Reset</button>';
+        html += '<button class="timer-btn" data-action="start" data-exid="'+ex.id+'" data-dkey="'+dkey+'" data-seconds="'+ex.seconds+'" onclick="handleTimerBtn(this)">Start</button>';
+        html += '<button class="timer-btn reset-btn" data-exid="'+ex.id+'" data-dkey="'+dkey+'" data-seconds="'+ex.seconds+'" onclick="resetTimer(this.dataset.exid,this.dataset.dkey,parseInt(this.dataset.seconds))">Reset</button>';
         html += '<span style="color:var(--text3);font-size:11px;font-family:var(--mono)">'+ex.reps+'</span></div>';
       } else {
         // Weight input (only for weighted)
@@ -748,34 +745,61 @@ function renderFortschritt() {
 }
 
 // ══ TIMERS ══
+function handleTimerBtn(btn) {
+  var exId = btn.dataset.exid, dkey = btn.dataset.dkey, seconds = parseInt(btn.dataset.seconds);
+  var key = exId + '-' + dkey;
+  if (TIMERS[key] && TIMERS[key].interval) {
+    stopTimer(exId, dkey, seconds);
+  } else {
+    startTimer(exId, dkey, seconds);
+  }
+}
 function startTimer(exId, dkey, seconds) {
-  var key=exId+'-'+dkey;
-  if(TIMERS[key]) clearInterval(TIMERS[key]);
-  var rem=seconds, el=document.getElementById('td-'+exId+'-'+dkey), wrap=document.getElementById('tw-'+exId+'-'+dkey);
-  if(!el) return;
-  var btn=wrap.querySelector('.timer-btn:not(.reset-btn)');
-  if(btn){btn.textContent='Stop';btn.classList.add('stop');btn.onclick=function(){stopTimer(exId,dkey,seconds);};}
-  TIMERS[key]=setInterval(function(){
-    rem--;
-    var e=document.getElementById('td-'+exId+'-'+dkey);
-    if(e) e.textContent=rem;
-    if(rem<=0){
-      clearInterval(TIMERS[key]); delete TIMERS[key];
-      if(e){e.textContent='✓';e.style.color='var(--accent3)';}
-      beep(880,3);
+  var key = exId + '-' + dkey;
+  // Clear any existing interval for this key
+  if (TIMERS[key] && TIMERS[key].interval) clearInterval(TIMERS[key].interval);
+  // Use remaining time if timer was paused, else start fresh
+  var rem = (TIMERS[key] && TIMERS[key].rem > 0 && TIMERS[key].rem < seconds) ? TIMERS[key].rem : seconds;
+  TIMERS[key] = { interval: null, rem: rem };
+  var disp = document.getElementById('td-' + exId + '-' + dkey);
+  var wrap = document.getElementById('tw-' + exId + '-' + dkey);
+  if (!disp || !wrap) return;
+  disp.style.color = 'var(--accent2)';
+  disp.textContent = rem;
+  var btn = wrap.querySelector('.timer-btn:not(.reset-btn)');
+  if (btn) { btn.textContent = 'Stop'; btn.className = 'timer-btn stop'; btn.setAttribute('data-action','stop'); }
+  TIMERS[key].interval = setInterval(function() {
+    if (!TIMERS[key]) return;
+    TIMERS[key].rem--;
+    var e = document.getElementById('td-' + exId + '-' + dkey);
+    if (e) e.textContent = TIMERS[key].rem;
+    if (TIMERS[key].rem <= 0) {
+      clearInterval(TIMERS[key].interval);
+      TIMERS[key] = null;
+      var e2 = document.getElementById('td-' + exId + '-' + dkey);
+      if (e2) { e2.textContent = '✓'; e2.style.color = 'var(--accent3)'; }
+      var w2 = document.getElementById('tw-' + exId + '-' + dkey);
+      if (w2) { var b2 = w2.querySelector('.timer-btn:not(.reset-btn)'); if (b2) { b2.textContent = 'Start'; b2.className = 'timer-btn'; } }
+      beep(880, 3);
     }
-  },1000);
+  }, 1000);
 }
-function stopTimer(exId,dkey,seconds){
-  var key=exId+'-'+dkey; if(TIMERS[key]){clearInterval(TIMERS[key]);delete TIMERS[key];}
-  var wrap=document.getElementById('tw-'+exId+'-'+dkey); if(!wrap) return;
-  var btn=wrap.querySelector('.timer-btn.stop');
-  if(btn){btn.textContent='Start';btn.classList.remove('stop');btn.onclick=function(){startTimer(exId,dkey,seconds);};}
+function stopTimer(exId, dkey, seconds) {
+  var key = exId + '-' + dkey;
+  if (TIMERS[key] && TIMERS[key].interval) { clearInterval(TIMERS[key].interval); TIMERS[key].interval = null; }
+  var wrap = document.getElementById('tw-' + exId + '-' + dkey);
+  if (!wrap) return;
+  var btn = wrap.querySelector('.timer-btn.stop');
+  if (btn) { btn.textContent = 'Start'; btn.className = 'timer-btn'; btn.setAttribute('data-action','start'); }
 }
-function resetTimer(exId,dkey,seconds){
-  stopTimer(exId,dkey,seconds);
-  var e=document.getElementById('td-'+exId+'-'+dkey);
-  if(e){e.textContent=seconds;e.style.color='var(--accent2)';}
+function resetTimer(exId, dkey, seconds) {
+  var key = exId + '-' + dkey;
+  if (TIMERS[key] && TIMERS[key].interval) clearInterval(TIMERS[key].interval);
+  TIMERS[key] = null;
+  var e = document.getElementById('td-' + exId + '-' + dkey);
+  if (e) { e.textContent = seconds; e.style.color = 'var(--accent2)'; }
+  var wrap = document.getElementById('tw-' + exId + '-' + dkey);
+  if (wrap) { var btn = wrap.querySelector('.timer-btn:not(.reset-btn)'); if (btn) { btn.textContent = 'Start'; btn.className = 'timer-btn'; } }
 }
 
 function startStretchTimer(idx,secs){
