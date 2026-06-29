@@ -280,6 +280,17 @@ function getCoreFinisher(type, week) {
   return [];
 }
 
+var BANANA_BAG = {
+  'kraft-a': {label:'Boxen-Kombos — Technik', items:[
+    'Jab–Cross, locker, Hüftdrehung sauber',
+    'Jab–Cross–Hook, kontrolliertes Tempo',
+  ]},
+  'kraft-c': {label:'Thai-Kicks — Technik', items:[
+    'Round Kick je Seite, langsam, Hüftrotation im Fokus',
+    'Knee Strike je Seite, Standbein stabil halten',
+  ]},
+};
+
 var SUPERSETS_BASE = {
   'kraft-a': [
     {id:'ss-a1', label:'Drücken + Ziehen', rest:90,
@@ -311,10 +322,10 @@ var SUPERSETS_BASE = {
         {id:'burpee', name:'Burpee (Wo 1–4 ohne Sprung, ab Wo 5 mit)', sets:4, reps:'10–12', weighted:false, timed:false},
         {id:'sl-rdl', name:'DB Einbeiniges RDL (DB je Hand)', sets:4, reps:'8 je Seite', weighted:true, timed:false},
       ]},
-    {id:'ss-c2', label:'DB Thruster + DB Rudern', rest:90,
+    {id:'ss-c2', label:'DB Thruster + Klimmzug', rest:90,
       ex:[
         {id:'thruster', name:'DB Thruster (Kniebeuge zu Schulterdrücken)', sets:3, reps:'10', weighted:true, timed:false},
-        {id:'db-row-c', name:'DB Einarmiges Rudern (Untergriff-Fokus)', sets:3, reps:'12 je Seite', weighted:true, timed:false},
+        {id:'pullup-assist', name:'Klimmzug (strikt bis Limit, Rest mit Band)', sets:3, reps:'5–8', weighted:false, timed:false},
       ]},
   ],
 };
@@ -527,7 +538,7 @@ function renderKraftContent(type, week, dkey) {
   // Build supersets with core finisher
   var ssets = SUPERSETS_BASE[type].slice();
   var core = getCoreFinisher(type, week);
-  if (core.length) ssets = ssets.concat([{id:'ss-core', label:'Core Finisher', rest:45, ex:core}]);
+  if (core.length) ssets = ssets.concat([{id:'ss-core-'+type, label:'Core Finisher', rest:45, ex:core}]);
   ssets.forEach(function(ss){
     html += '<div class="ss-block">';
     html += '<div class="ss-header"><span class="ss-label">'+ss.label+'</span><span class="ss-rest">Pause: '+ss.rest+' Sek</span></div>';
@@ -552,7 +563,7 @@ function renderKraftContent(type, week, dkey) {
       if (ex.timed) {
         html += '<div class="timer-block" id="tw-'+ex.id+'-'+dkey+'">';
         html += '<div class="timer-display" id="td-'+ex.id+'-'+dkey+'">'+ex.seconds+'</div>';
-        html += '<button class="timer-btn" data-action="start" data-exid="'+ex.id+'" data-dkey="'+dkey+'" data-seconds="'+ex.seconds+'" onclick="handleTimerBtn(this)">Start</button>';
+        html += '<button class="timer-btn" data-action="start" data-exid="'+ex.id+'" data-dkey="'+dkey+'" data-seconds="'+ex.seconds+'" data-ssid="'+ss.id+'" onclick="handleTimerBtn(this)">Start</button>';
         html += '<button class="timer-btn reset-btn" data-exid="'+ex.id+'" data-dkey="'+dkey+'" data-seconds="'+ex.seconds+'" onclick="resetTimer(this.dataset.exid,this.dataset.dkey,parseInt(this.dataset.seconds))">Reset</button>';
         html += '<span style="color:var(--text3);font-size:11px;font-family:var(--mono)">'+ex.reps+'</span></div>';
       } else {
@@ -581,6 +592,22 @@ function renderKraftContent(type, week, dkey) {
     });
     html += '</div>';
   });
+  // Banana Bag Finisher (nur Kraft A & C, Technik + leichtes Cardio)
+  var bag = BANANA_BAG[type];
+  if (bag) {
+    html += '<div class="ss-block" style="border-left-color:var(--accent4)">';
+    html += '<div class="ss-header"><span class="ss-label" style="color:var(--accent4)">🥊 Banana Bag — '+bag.label+'</span><span class="ss-rest">3 Runden · 30 Sek Pause</span></div>';
+    bag.items.forEach(function(item){
+      html += '<div class="warmup-item" style="border-bottom-color:var(--border)"><div class="warmup-name">'+item+'</div></div>';
+    });
+    var bagKey = 'bag-'+type;
+    html += '<div class="timer-block" id="tw-'+bagKey+'-'+dkey+'" style="margin-top:8px">';
+    html += '<div class="timer-display" id="td-'+bagKey+'-'+dkey+'">60</div>';
+    html += '<button class="timer-btn" data-action="start" data-exid="'+bagKey+'" data-dkey="'+dkey+'" data-seconds="60" onclick="handleTimerBtn(this)">Start</button>';
+    html += '<button class="timer-btn reset-btn" data-exid="'+bagKey+'" data-dkey="'+dkey+'" data-seconds="60" onclick="resetTimer(this.dataset.exid,this.dataset.dkey,parseInt(this.dataset.seconds))">Reset</button>';
+    html += '<span style="color:var(--text3);font-size:11px;font-family:var(--mono)">60 Sek Runde, locker</span></div>';
+    html += '</div>';
+  }
   return html;
 }
 
@@ -601,20 +628,29 @@ function renderLaufContent(type) {
 function renderErholungContent(dkey) {
   var saved = LOG[dkey]&&LOG[dkey]._mob ? LOG[dkey]._mob : {};
   var items = [
-    {id:'hf',name:'Hüftbeuger Dehnung (kniend)',dur:'60 Sek je Seite'},
-    {id:'pi',name:'Taube',dur:'90 Sek je Seite'},
-    {id:'hs',name:'Oberschenkeldehnung',dur:'60 Sek je Seite'},
-    {id:'cs',name:'Wadendehnung — an der Wand',dur:'60 Sek je Seite'},
-    {id:'tr',name:'Brustwirbel Rotation',dur:'10 Wdh je Seite'},
-    {id:'wk',name:'Optional: 20 Min Spaziergang',dur:'HF unter 128'},
+    {id:'hf',name:'Hüftbeuger Dehnung (kniend)',dur:'60 Sek je Seite',secs:60},
+    {id:'pi',name:'Taube',dur:'90 Sek je Seite',secs:90},
+    {id:'hs',name:'Oberschenkeldehnung',dur:'60 Sek je Seite',secs:60},
+    {id:'cs',name:'Wadendehnung — an der Wand',dur:'60 Sek je Seite',secs:60},
+    {id:'tr',name:'Brustwirbel Rotation',dur:'10 Wdh je Seite',secs:null},
+    {id:'wk',name:'Optional: 20 Min Spaziergang',dur:'HF unter 128',secs:null},
   ];
   var html = '<div class="card" style="border-left:3px solid var(--accent3)">';
   html += '<p class="card-label" style="color:var(--accent3)">Mobilitäts-Sequenz</p>';
   items.forEach(function(item){
     var done=saved[item.id];
-    html+='<div class="mob-row"><span style="color:var(--text);font-size:13px">'+item.name+'</span>';
+    var mobKey='mob-'+item.id;
+    html+='<div class="mob-row" style="flex-wrap:wrap"><span style="color:var(--text);font-size:13px;flex:1">'+item.name+'</span>';
     html+='<div style="display:flex;align-items:center;gap:10px"><span style="color:var(--text3);font-size:11px;font-family:var(--mono)">'+item.dur+'</span>';
-    html+='<button class="mob-check'+(done?' done':'')+'" onclick="toggleMob(\''+dkey+'\',\''+item.id+'\')">'+( done?'✓':'')+'</button></div></div>';
+    html+='<button class="mob-check'+(done?' done':'')+'" onclick="toggleMob(\''+dkey+'\',\''+item.id+'\')">'+( done?'✓':'')+'</button></div>';
+    if(item.secs){
+      html+='<div class="timer-block" id="tw-'+mobKey+'-'+dkey+'" style="width:100%;margin-top:6px">';
+      html+='<div class="timer-display" id="td-'+mobKey+'-'+dkey+'">'+item.secs+'</div>';
+      html+='<button class="timer-btn" data-action="start" data-exid="'+mobKey+'" data-dkey="'+dkey+'" data-seconds="'+item.secs+'" onclick="handleTimerBtn(this)">Start</button>';
+      html+='<button class="timer-btn reset-btn" data-exid="'+mobKey+'" data-dkey="'+dkey+'" data-seconds="'+item.secs+'" onclick="resetTimer(this.dataset.exid,this.dataset.dkey,parseInt(this.dataset.seconds))">Reset</button>';
+      html+='</div>';
+    }
+    html+='</div>';
   });
   html += '</div>';
   return html;
@@ -744,49 +780,116 @@ function renderFortschritt() {
   document.getElementById('fortschritt-content').innerHTML = html;
 }
 
+// ══ TIMER ENGINE (endzeit-basiert — läuft korrekt weiter auch wenn Bildschirm sperrt) ══
+var ACTIVE_WAKE_LOCK = null;
+function requestWakeLockSafe(){
+  if(!('wakeLock' in navigator)) return;
+  try {
+    navigator.wakeLock.request('screen').then(function(lock){ ACTIVE_WAKE_LOCK = lock; }).catch(function(){});
+  } catch(e){}
+}
+function releaseWakeLockSafe(){
+  if(ACTIVE_WAKE_LOCK){ try{ ACTIVE_WAKE_LOCK.release(); }catch(e){} ACTIVE_WAKE_LOCK = null; }
+}
+// Re-acquire wake lock if page becomes visible again while a timer is meant to be running.
+// Also immediately refresh all visible timer displays from their stored endAt, so a timer
+// that kept running (or finished) while the screen was locked shows the correct state at once.
+document.addEventListener('visibilitychange', function(){
+  if(document.visibilityState === 'visible') {
+    var anyRunning = false;
+    function refreshStore(store, renderTick, renderDone) {
+      Object.keys(store).forEach(function(k){
+        var t = store[k];
+        if (!t || !t.endAt) return;
+        anyRunning = true;
+        var remMs = t.endAt - Date.now();
+        if (remMs <= 0) { clearInterval(t.interval); delete store[k]; if (renderDone) renderDone(k); }
+        else if (renderTick) renderTick(k, Math.ceil(remMs/1000));
+      });
+    }
+    refreshStore(TIMERS, function(k,rem){ var e=document.getElementById('td-'+k); if(e) e.textContent=rem; },
+      function(k){ var e=document.getElementById('td-'+k); if(e){e.textContent='✓';e.style.color='var(--accent3)';} var w=document.getElementById('tw-'+k); if(w){var b=w.querySelector('.timer-btn:not(.reset-btn)'); if(b){b.textContent='Start';b.className='timer-btn';}} beep(880,3); });
+    refreshStore(STRETCH_TIMERS, function(k,rem){ var e=document.getElementById('st-'+k); if(e) e.textContent=rem; },
+      function(k){ var e=document.getElementById('st-'+k); if(e){e.textContent='✓';e.style.color='var(--accent3)';} beep(660,2); });
+    refreshStore(PAUSE_TIMERS, function(k,rem){ var dkeySsId=k.replace(/^pause-/,''); var e=document.getElementById('pause-disp-'+dkeySsId); if(e) e.textContent=rem; },
+      function(k){ var dkeySsId=k.replace(/^pause-/,''); var e=document.getElementById('pause-'+dkeySsId); if(e) e.classList.remove('active'); beep(528,2); });
+    if(anyRunning) requestWakeLockSafe();
+  }
+});
+
+// Generic endtime-based countdown. onTick(remSecs) called every UI update, onDone() called once when it hits 0.
+function startEndtimeCountdown(store, key, seconds, onTick, onDone) {
+  if (store[key] && store[key].interval) clearInterval(store[key].interval);
+  var endAt = Date.now() + seconds * 1000;
+  store[key] = { interval: null, endAt: endAt, onDone: onDone };
+  requestWakeLockSafe();
+  function tick() {
+    if (!store[key]) return;
+    var remMs = store[key].endAt - Date.now();
+    var rem = Math.max(0, Math.ceil(remMs / 1000));
+    onTick(rem);
+    if (remMs <= 0) {
+      clearInterval(store[key].interval);
+      var doneCb = store[key].onDone;
+      delete store[key];
+      if (Object.keys(TIMERS).length===0 && Object.keys(STRETCH_TIMERS).length===0 && Object.keys(PAUSE_TIMERS).length===0) releaseWakeLockSafe();
+      if (doneCb) doneCb();
+    }
+  }
+  store[key].interval = setInterval(tick, 1000);
+  tick();
+}
+function stopEndtimeCountdown(store, key) {
+  if (store[key] && store[key].interval) clearInterval(store[key].interval);
+  delete store[key];
+  if (Object.keys(TIMERS).length===0 && Object.keys(STRETCH_TIMERS).length===0 && Object.keys(PAUSE_TIMERS).length===0) releaseWakeLockSafe();
+}
+
 // ══ TIMERS ══
 function handleTimerBtn(btn) {
-  var exId = btn.dataset.exid, dkey = btn.dataset.dkey, seconds = parseInt(btn.dataset.seconds);
+  var exId = btn.dataset.exid, dkey = btn.dataset.dkey, seconds = parseInt(btn.dataset.seconds), ssId = btn.dataset.ssid;
   var key = exId + '-' + dkey;
   if (TIMERS[key] && TIMERS[key].interval) {
     stopTimer(exId, dkey, seconds);
   } else {
-    startTimer(exId, dkey, seconds);
+    startTimer(exId, dkey, seconds, ssId);
   }
 }
-function startTimer(exId, dkey, seconds) {
+function startTimer(exId, dkey, seconds, ssId) {
   var key = exId + '-' + dkey;
-  // Clear any existing interval for this key
-  if (TIMERS[key] && TIMERS[key].interval) clearInterval(TIMERS[key].interval);
   // Use remaining time if timer was paused, else start fresh
-  var rem = (TIMERS[key] && TIMERS[key].rem > 0 && TIMERS[key].rem < seconds) ? TIMERS[key].rem : seconds;
-  TIMERS[key] = { interval: null, rem: rem };
+  var rem = (TIMERS[key] && TIMERS[key].endAt) ? Math.max(1, Math.ceil((TIMERS[key].endAt - Date.now())/1000)) : seconds;
   var disp = document.getElementById('td-' + exId + '-' + dkey);
   var wrap = document.getElementById('tw-' + exId + '-' + dkey);
   if (!disp || !wrap) return;
   disp.style.color = 'var(--accent2)';
-  disp.textContent = rem;
   var btn = wrap.querySelector('.timer-btn:not(.reset-btn)');
   if (btn) { btn.textContent = 'Stop'; btn.className = 'timer-btn stop'; btn.setAttribute('data-action','stop'); }
-  TIMERS[key].interval = setInterval(function() {
-    if (!TIMERS[key]) return;
-    TIMERS[key].rem--;
+  startEndtimeCountdown(TIMERS, key, rem, function(r){
     var e = document.getElementById('td-' + exId + '-' + dkey);
-    if (e) e.textContent = TIMERS[key].rem;
-    if (TIMERS[key].rem <= 0) {
-      clearInterval(TIMERS[key].interval);
-      TIMERS[key] = null;
-      var e2 = document.getElementById('td-' + exId + '-' + dkey);
-      if (e2) { e2.textContent = '✓'; e2.style.color = 'var(--accent3)'; }
-      var w2 = document.getElementById('tw-' + exId + '-' + dkey);
-      if (w2) { var b2 = w2.querySelector('.timer-btn:not(.reset-btn)'); if (b2) { b2.textContent = 'Start'; b2.className = 'timer-btn'; } }
-      beep(880, 3);
+    if (e) e.textContent = r;
+  }, function(){
+    var e2 = document.getElementById('td-' + exId + '-' + dkey);
+    if (e2) { e2.textContent = '✓'; e2.style.color = 'var(--accent3)'; }
+    var w2 = document.getElementById('tw-' + exId + '-' + dkey);
+    if (w2) { var b2 = w2.querySelector('.timer-btn:not(.reset-btn)'); if (b2) { b2.textContent = 'Start'; b2.className = 'timer-btn'; } }
+    beep(880, 3);
+    // Timed exercise finished — check if the superset's pause timer should now start
+    if (ssId) {
+      var restSecs = (ssId.indexOf('ss-core-')===0) ? 45 : 90;
+      ['kraft-a','kraft-b','kraft-c'].forEach(function(t){
+        SUPERSETS_BASE[t].forEach(function(s){ if(s.id===ssId) restSecs=s.rest; });
+      });
+      setTimeout(function(){ checkAndStartPause(ssId,dkey,restSecs); },300);
     }
-  }, 1000);
+  });
 }
 function stopTimer(exId, dkey, seconds) {
   var key = exId + '-' + dkey;
-  if (TIMERS[key] && TIMERS[key].interval) { clearInterval(TIMERS[key].interval); TIMERS[key].interval = null; }
+  // Preserve remaining time so a later Start resumes instead of restarting
+  var remMs = (TIMERS[key] && TIMERS[key].endAt) ? (TIMERS[key].endAt - Date.now()) : null;
+  stopEndtimeCountdown(TIMERS, key);
+  if (remMs !== null) TIMERS[key] = { endAt: Date.now() + Math.max(0, remMs) };
   var wrap = document.getElementById('tw-' + exId + '-' + dkey);
   if (!wrap) return;
   var btn = wrap.querySelector('.timer-btn.stop');
@@ -794,8 +897,7 @@ function stopTimer(exId, dkey, seconds) {
 }
 function resetTimer(exId, dkey, seconds) {
   var key = exId + '-' + dkey;
-  if (TIMERS[key] && TIMERS[key].interval) clearInterval(TIMERS[key].interval);
-  TIMERS[key] = null;
+  stopEndtimeCountdown(TIMERS, key);
   var e = document.getElementById('td-' + exId + '-' + dkey);
   if (e) { e.textContent = seconds; e.style.color = 'var(--accent2)'; }
   var wrap = document.getElementById('tw-' + exId + '-' + dkey);
@@ -803,22 +905,17 @@ function resetTimer(exId, dkey, seconds) {
 }
 
 function startStretchTimer(idx,secs){
-  if(STRETCH_TIMERS[idx]) clearInterval(STRETCH_TIMERS[idx]);
-  var rem=secs;
   var el=document.getElementById('st-'+idx);
   if(el) el.style.color='var(--accent2)';
-  STRETCH_TIMERS[idx]=setInterval(function(){
-    rem--;
+  startEndtimeCountdown(STRETCH_TIMERS, idx, secs, function(rem){
     var e=document.getElementById('st-'+idx); if(e) e.textContent=rem;
-    if(rem<=0){
-      clearInterval(STRETCH_TIMERS[idx]); delete STRETCH_TIMERS[idx];
-      var e2=document.getElementById('st-'+idx); if(e2){e2.textContent='✓';e2.style.color='var(--accent3)';}
-      beep(660,2);
-    }
-  },1000);
+  }, function(){
+    var e2=document.getElementById('st-'+idx); if(e2){e2.textContent='✓';e2.style.color='var(--accent3)';}
+    beep(660,2);
+  });
 }
 function resetStretchTimer(idx,secs){
-  if(STRETCH_TIMERS[idx]){clearInterval(STRETCH_TIMERS[idx]);delete STRETCH_TIMERS[idx];}
+  stopEndtimeCountdown(STRETCH_TIMERS, idx);
   var e=document.getElementById('st-'+idx); if(e){e.textContent=secs;e.style.color='var(--accent2)';}
 }
 
@@ -826,39 +923,38 @@ function resetStretchTimer(idx,secs){
 function checkAndStartPause(ssId, dkey, restSecs) {
   // Find all exercises in this superset
   var ss = null;
-  var type = null;
   var week = Math.floor(getCurrentWeekDay().totalDay/7)+1;
   ['kraft-a','kraft-b','kraft-c'].forEach(function(t){
-    SUPERSETS_BASE[t].concat([{id:'ss-core',ex:getCoreFinisher(t,week)}]).forEach(function(s){ if(s.id===ssId){ss=s;type=t;} });
+    SUPERSETS_BASE[t].concat([{id:'ss-core-'+t,rest:45,ex:getCoreFinisher(t,week)}]).forEach(function(s){ if(s.id===ssId){ss=s;} });
   });
   if(!ss) return;
-  // Check if all non-timed exercises have at least one rep entered in current set
+  // Check if ALL exercises in the superset are done for the current round:
+  // - non-timed: at least one set with reps entered today
+  // - timed: its own countdown has finished (shows ✓) for today
   var allDone = ss.ex.every(function(ex){
-    if(ex.timed) return true;
+    if(ex.timed) {
+      var disp = document.getElementById('td-'+ex.id+'-'+dkey);
+      return disp && disp.textContent === '✓';
+    }
     var sets = LOG[dkey]&&LOG[dkey][ex.id] ? LOG[dkey][ex.id] : [];
-    // Check if at least one set has reps today
     return sets.some(function(s){ return s&&s.reps; });
   });
   if(!allDone) return;
   var el=document.getElementById('pause-'+ssId+'-'+dkey);
   if(!el||el.classList.contains('active')) return;
   el.classList.add('active');
-  var rem=restSecs, key='pause-'+ssId+'-'+dkey;
-  if(PAUSE_TIMERS[key]) clearInterval(PAUSE_TIMERS[key]);
-  PAUSE_TIMERS[key]=setInterval(function(){
-    rem--;
+  var key='pause-'+ssId+'-'+dkey;
+  startEndtimeCountdown(PAUSE_TIMERS, key, restSecs, function(rem){
     var disp=document.getElementById('pause-disp-'+ssId+'-'+dkey); if(disp) disp.textContent=rem;
-    if(rem<=0){
-      clearInterval(PAUSE_TIMERS[key]); delete PAUSE_TIMERS[key];
-      var e=document.getElementById('pause-'+ssId+'-'+dkey);
-      if(e) e.classList.remove('active');
-      beep(528,2);
-    }
-  },1000);
+  }, function(){
+    var e=document.getElementById('pause-'+ssId+'-'+dkey);
+    if(e) e.classList.remove('active');
+    beep(528,2);
+  });
 }
 function skipPause(ssId,dkey){
   var key='pause-'+ssId+'-'+dkey;
-  if(PAUSE_TIMERS[key]){clearInterval(PAUSE_TIMERS[key]);delete PAUSE_TIMERS[key];}
+  stopEndtimeCountdown(PAUSE_TIMERS, key);
   var el=document.getElementById('pause-'+ssId+'-'+dkey); if(el) el.classList.remove('active');
 }
 
@@ -888,8 +984,8 @@ function saveReps(exId, dkey, setIdx, val, ssId) {
   if(el) el.classList.toggle('done',!!(val&&val.length>0));
   // Check if we should start pause timer
   if(ssId) {
-    // Find rest seconds for this superset
-    var restSecs=90;
+    // Find rest seconds for this superset (ss-core uses 45s, defined where it's built in renderKraftContent)
+    var restSecs = (ssId.indexOf('ss-core-')===0) ? 45 : 90;
     ['kraft-a','kraft-b','kraft-c'].forEach(function(t){
       SUPERSETS_BASE[t].forEach(function(s){ if(s.id===ssId) restSecs=s.rest; });
     });
