@@ -241,12 +241,12 @@ function getCoreFinisher(type, week) {
       {id:'plank-tap', name:'Plank mit Schultertap', sets:3, reps:'10 je Seite', weighted:false, timed:false},
     ];
     if (week <= 8) return [
-      {id:'db-crunch', name:'DB Crunch', sets:4, reps:'15', weighted:true, timed:false},
-      {id:'ab-rollout', name:'Ab Rollout (BB oder Rad)', sets:4, reps:'8', weighted:false, timed:false},
+      {id:'db-crunch', name:'DB Crunch', sets:3, reps:'15', weighted:true, timed:false},
+      {id:'ab-rollout', name:'Ab Rollout (BB oder Rad)', sets:3, reps:'8', weighted:false, timed:false},
     ];
     return [
-      {id:'db-crunch', name:'DB Crunch (schwerer)', sets:4, reps:'20', weighted:true, timed:false},
-      {id:'ab-rollout', name:'Ab Rollout', sets:4, reps:'12', weighted:false, timed:false},
+      {id:'db-crunch', name:'DB Crunch (schwerer)', sets:3, reps:'20', weighted:true, timed:false},
+      {id:'ab-rollout', name:'Ab Rollout', sets:3, reps:'12', weighted:false, timed:false},
     ];
   }
   if (type === 'kraft-b') {
@@ -259,8 +259,8 @@ function getCoreFinisher(type, week) {
       {id:'side-plank-hip', name:'Side Plank mit Hüftheben', sets:3, reps:'10 je Seite', weighted:false, timed:false},
     ];
     return [
-      {id:'russian-twist', name:'Russian Twist (schwerer DB)', sets:4, reps:'20 gesamt', weighted:true, timed:false},
-      {id:'copenhagen', name:'Copenhagen Plank', sets:4, reps:'20 Sek je Seite', weighted:false, timed:true, seconds:20},
+      {id:'russian-twist', name:'Russian Twist (schwerer DB)', sets:3, reps:'20 gesamt', weighted:true, timed:false},
+      {id:'copenhagen', name:'Copenhagen Plank', sets:3, reps:'20 Sek je Seite', weighted:false, timed:true, seconds:20},
     ];
   }
   if (type === 'kraft-c') {
@@ -295,37 +295,37 @@ var SUPERSETS_BASE = {
   'kraft-a': [
     {id:'ss-a1', label:'Drücken + Ziehen', rest:90,
       ex:[
-        {id:'pushup', name:'Liegestütz', rotation:PUSH_UP_ROTATION, sets:4, reps:'20–25', weighted:false, timed:false},
-        {id:'db-row-a', name:'DB Vorgebeugtes Rudern', sets:4, reps:'12–15', weighted:true, timed:false},
+        {id:'pushup', name:'Liegestütz', rotation:PUSH_UP_ROTATION, sets:3, reps:'bis Versagen', weighted:false, timed:false},
+        {id:'db-row-a', name:'DB Einarmiges Rudern', sets:3, reps:'12 je Seite', weighted:true, timed:false},
       ]},
-    {id:'ss-a2', label:'DB Schulterdrücken + DB Curl', rest:75,
+    {id:'ss-a2', label:'Klimmzug + Schulterdrücken', rest:90,
       ex:[
+        {id:'pullup-assist', name:'Klimmzug (strikt bis Limit, Rest mit Band)', sets:3, reps:'5–8', weighted:false, timed:false},
         {id:'ohp', name:'DB Schulterdrücken', sets:3, reps:'12', weighted:true, timed:false},
-        {id:'db-curl', name:'DB Bizeps Curl', sets:3, reps:'12', weighted:true, timed:false},
       ]},
   ],
   'kraft-b': [
-    {id:'ss-b1', label:'DB Hüftstreckung + DB Rudern', rest:90,
+    {id:'ss-b1', label:'Hinterkette + Einbeinig', rest:90,
       ex:[
-        {id:'db-rdl', name:'DB Rumänisches Kreuzheben', sets:4, reps:'12', weighted:true, timed:false},
-        {id:'db-row-b', name:'DB Einarmiges Rudern', sets:4, reps:'12 je Seite', weighted:true, timed:false},
+        {id:'db-rdl', name:'DB Rumänisches Kreuzheben', sets:3, reps:'12', weighted:true, timed:false},
+        {id:'bss', name:'Bulgarian Split Squat (Körpergewicht)', sets:3, reps:'10 je Seite', weighted:false, timed:false},
       ]},
-    {id:'ss-b2', label:'DB Kniebeuge + Jumping Lunge', rest:90,
+    {id:'ss-b2', label:'Kniebeuge + Waden', rest:90,
       ex:[
-        {id:'goblet', name:'DB Goblet Kniebeuge', sets:4, reps:'15–20', weighted:true, timed:false},
-        {id:'jumping-lunge', name:'Jumping Lunge (Körpergewicht)', sets:4, reps:'10 je Bein', weighted:false, timed:false},
+        {id:'goblet', name:'DB Goblet Kniebeuge', sets:3, reps:'15', weighted:true, timed:false},
+        {id:'sl-calf', name:'Einbeiniges Wadenheben (an Wand abstützen)', sets:3, reps:'15 je Seite', weighted:false, timed:false},
       ]},
   ],
   'kraft-c': [
-    {id:'ss-c1', label:'Körpergewicht + DB Hüftstreckung', rest:90,
+    {id:'ss-c1', label:'Klimmzug + Floor Press', rest:90,
       ex:[
-        {id:'burpee', name:'Burpee (Wo 1–4 ohne Sprung, ab Wo 5 mit)', sets:4, reps:'10–12', weighted:false, timed:false},
-        {id:'sl-rdl', name:'DB Einbeiniges RDL (DB je Hand)', sets:4, reps:'8 je Seite', weighted:true, timed:false},
-      ]},
-    {id:'ss-c2', label:'DB Thruster + Klimmzug', rest:90,
-      ex:[
-        {id:'thruster', name:'DB Thruster (Kniebeuge zu Schulterdrücken)', sets:3, reps:'10', weighted:true, timed:false},
         {id:'pullup-assist', name:'Klimmzug (strikt bis Limit, Rest mit Band)', sets:3, reps:'5–8', weighted:false, timed:false},
+        {id:'floor-press', name:'DB Floor Press', sets:3, reps:'12', weighted:true, timed:false},
+      ]},
+    {id:'ss-c2', label:'Rudern Untergriff + Pike Push-up', rest:90,
+      ex:[
+        {id:'db-row-c', name:'DB Einarmiges Rudern (Untergriff)', sets:3, reps:'12 je Seite', weighted:true, timed:false},
+        {id:'pike', name:'Pike Push-up', prog:['Füße flach','Füße erhöht (Wo 5–8)','steiler — Hüfte hoch, Kopf tief (Wo 9–12)'], sets:3, reps:'8–12', weighted:false, timed:false},
       ]},
   ],
 };
@@ -344,11 +344,11 @@ var WARMUPS = {
     {name:'Beinschwingen — vor/zurück und seitwärts',detail:'10 je Richtung pro Bein'},
     {name:'Inchworm zur tiefen Kniebeuge',detail:'5 Wdh · Oberschenkel dehnen und Hüften öffnen'},
   ]},
-  'kraft-c':{label:'Ganzkörper Dynamische Aktivierung',dauer:'6 Min',items:[
-    {name:'Springseil — Intensität aufbauen',detail:'2 Min · leicht starten, moderate Pace. HF Ziel 130–140'},
-    {name:'Weltbester Stretch',detail:'5 Wdh je Seite · Hüftbeuger + BWS-Rotation in einem'},
-    {name:'Squat to Stand',detail:'8 Wdh · Knöchel, Hüften und BWS vorbereiten'},
-    {name:'Schulterblatt-Klimmzüge (hängen, Schultern runterziehen)',detail:'8 Wdh · Latissimus aktivieren'},
+  'kraft-c':{label:'Oberkörper Aktivierung — Zug-Fokus',dauer:'5 Min',items:[
+    {name:'Springseil — leichtes Tempo',detail:'2 Min · HF auf ~120–130, Schultern und Handgelenke aufwärmen'},
+    {name:'Armkreisen — vor und zurück',detail:'30 Sek je Richtung'},
+    {name:'Schulterblatt-Klimmzüge (hängen, Schultern runterziehen)',detail:'8 Wdh · Latissimus aktivieren vor den Klimmzügen'},
+    {name:'Türrahmen Brustdehnung',detail:'10 Wdh · öffnet die Brust vor dem Drücken'},
   ]},
 };
 
@@ -460,18 +460,21 @@ function dateKey(d) { return d.toISOString().split('T')[0]; }
 function beep(freq, times) {
   try {
     var ctx = new (window.AudioContext||window.webkitAudioContext)();
-    for (var i=0; i<(times||3); i++) {
-      (function(t){
+    var base = freq||880;
+    var n = Math.max(4, (times||3)+1);
+    for (var i=0; i<n; i++) {
+      (function(t,i2){
         var osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.type = 'square';
         osc.connect(gain); gain.connect(ctx.destination);
-        osc.frequency.value = freq||880;
-        gain.gain.setValueAtTime(0.4, ctx.currentTime+t);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+t+0.25);
-        osc.start(ctx.currentTime+t); osc.stop(ctx.currentTime+t+0.25);
-      })(i*0.32);
+        osc.frequency.value = (i2%2===0) ? base : base*1.5;
+        gain.gain.setValueAtTime(0.7, ctx.currentTime+t);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+t+0.35);
+        osc.start(ctx.currentTime+t); osc.stop(ctx.currentTime+t+0.35);
+      })(i*0.45, i);
     }
   } catch(e){}
-  if (navigator.vibrate) navigator.vibrate([150,80,150]);
+  if (navigator.vibrate) navigator.vibrate([300,120,300,120,300]);
 }
 
 // ══ RENDER HEUTE ══
@@ -483,7 +486,7 @@ function renderHeute(dayOffset) {
   var date = getDateForDay(totalDay);
   var dkey = dateKey(date);
   var colors = {'kraft-a':'var(--accent)','kraft-b':'var(--accent)','kraft-c':'var(--accent)','lauf-leicht':'var(--accent2)','lauf-intervall':'var(--accent2)','lauf-lang':'var(--accent2)','erholung':'var(--accent3)'};
-  var labels = {'kraft-a':'Kraft A — Oberkörper','kraft-b':'Kraft B — Unterkörper + Ziehen','kraft-c':'Kraft C — Ganzkörper','lauf-leicht':'Leichter Lauf','lauf-intervall':'Intervall Lauf','lauf-lang':'Langer Lauf','erholung':'Aktive Erholung'};
+  var labels = {'kraft-a':'Kraft A — Oberkörper Push+Pull','kraft-b':'Kraft B — Beine Hypertrophie','kraft-c':'Kraft C — Oberkörper Pull+Push','lauf-leicht':'Leichter Lauf','lauf-intervall':'Intervall Lauf','lauf-lang':'Langer Lauf','erholung':'Aktive Erholung'};
   var durs = {'kraft-a':'35–40 Min','kraft-b':'35–40 Min','kraft-c':'35–40 Min','lauf-leicht':'30–35 Min','lauf-intervall':'30–40 Min','lauf-lang':'60–100 Min','erholung':'20–30 Min'};
   var c = colors[type];
   var html = '';
@@ -535,11 +538,11 @@ function renderKraftContent(type, week, dkey) {
     html+='<div class="warmup-item"><div class="warmup-name">'+item.name+'</div><div class="warmup-detail">'+item.detail+'</div></div>';
   });
   html += '</div>';
-  // Build supersets with core finisher
+  // Reihenfolge: Basis-Supersets -> Banana Bag -> Core Finisher
   var ssets = SUPERSETS_BASE[type].slice();
   var core = getCoreFinisher(type, week);
-  if (core.length) ssets = ssets.concat([{id:'ss-core-'+type, label:'Core Finisher', rest:45, ex:core}]);
-  ssets.forEach(function(ss){
+  var coreSS = core.length ? [{id:'ss-core-'+type, label:'Core Finisher', rest:45, ex:core}] : [];
+  function renderSS(ss){
     html += '<div class="ss-block">';
     html += '<div class="ss-header"><span class="ss-label">'+ss.label+'</span><span class="ss-rest">Pause: '+ss.rest+' Sek</span></div>';
     // Pause timer for this superset
@@ -551,6 +554,7 @@ function renderKraftContent(type, week, dkey) {
     ss.ex.forEach(function(ex){
       var exName = ex.name;
       if (ex.rotation) { var ri=(week-1)%ex.rotation.length; exName+=' <span style="color:var(--accent4);font-size:11px;font-family:var(--mono)">— '+ex.rotation[ri]+'</span>'; }
+      if (ex.prog) { var pi=week<=4?0:(week<=8?1:2); exName+=' <span style="color:var(--accent4);font-size:11px;font-family:var(--mono)">— '+ex.prog[pi]+'</span>'; }
       var lastW = getLastWeight(ex.id);
       var suggestion = '';
       if (ex.weighted && lastW) {
@@ -591,8 +595,9 @@ function renderKraftContent(type, week, dkey) {
       html += '</div>';
     });
     html += '</div>';
-  });
-  // Banana Bag Finisher (nur Kraft A & C, Technik + leichtes Cardio)
+  }
+  ssets.forEach(renderSS);
+  // Banana Bag (nur Kraft A & C) — VOR dem Core Finisher
   var bag = BANANA_BAG[type];
   if (bag) {
     html += '<div class="ss-block" style="border-left-color:var(--accent4)">';
@@ -607,6 +612,12 @@ function renderKraftContent(type, week, dkey) {
     html += '<button class="timer-btn reset-btn" data-exid="'+bagKey+'" data-dkey="'+dkey+'" data-seconds="60" onclick="resetTimer(this.dataset.exid,this.dataset.dkey,parseInt(this.dataset.seconds))">Reset</button>';
     html += '<span style="color:var(--text3);font-size:11px;font-family:var(--mono)">60 Sek Runde, locker</span></div>';
     html += '</div>';
+  }
+  // Core Finisher zum Schluss
+  coreSS.forEach(renderSS);
+  // Optionaler OCR-Finisher (nur Kraft C, wenn Zeit)
+  if (type === 'kraft-c') {
+    html += '<div class="info-box" style="border-left:3px solid var(--accent4)"><span style="color:var(--accent4)">Optional (wenn Zeit) — </span>Dead Hang 2× max Halten an der Stange (Grip für OCR) <em>oder</em> Burpees 3×10 (Spartan-Strafe üben).</div>';
   }
   return html;
 }
@@ -660,7 +671,7 @@ function renderErholungContent(dkey) {
 function renderPlan() {
   var html = '';
   var dnames=['Mo','Di','Mi','Do','Fr','Sa','So'];
-  var tshort={'kraft-a':'Kraft A','kraft-b':'Kraft B','kraft-c':'Kraft C','lauf-leicht':'Lauf','lauf-intervall':'Intervall','erholung':'Erholung','lauf-lang':'Lauf Lang'};
+  var tshort={'kraft-a':'OK A','kraft-b':'Beine','kraft-c':'OK B','lauf-leicht':'Lauf','lauf-intervall':'Intervall','erholung':'Erholung','lauf-lang':'Lauf Lang'};
   var tcolors={'kraft-a':'var(--accent)','kraft-b':'var(--accent)','kraft-c':'var(--accent)','lauf-leicht':'var(--accent2)','lauf-intervall':'var(--accent2)','lauf-lang':'var(--accent2)','erholung':'var(--accent3)'};
   for (var w=1;w<=12;w++){
     html+='<div class="card" style="margin-bottom:8px"><p style="color:var(--accent);font-size:10px;font-family:var(--mono);letter-spacing:.2em;text-transform:uppercase;margin-bottom:8px">Woche '+w+'</p>';
